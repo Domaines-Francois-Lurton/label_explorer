@@ -41,7 +41,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* bandeau blanc sur toute la largeur, séparé du contenu par un filet */
 .site-header{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px var(--gutter);background:#fff;box-shadow:0 1px 0 var(--line)}
 .brand{display:flex;align-items:center;gap:12px}
-.le{width:34px;height:34px;border-radius:10px;background:var(--app);color:#fff;display:grid;place-items:center;font-family:"Figtree",system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;flex:none}
+/* logo du favicon (assets/img/favicon.svg), comme l'en-tête du Portail */
+.brand__mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(160deg,#19b9ca,#007a91);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px oklch(0.52 0.12 212 / 0.35);flex:none}
+.brand__mark::after{content:"";width:14px;height:14px;border-radius:4px;background:#fff;opacity:.95}
 .brand__name{font-size:13px;font-weight:500;color:var(--ink-400);padding-left:12px;box-shadow:inset 1px 0 0 oklch(0 0 0 / 0.1)}
 .role{font-size:11.5px;font-weight:600;line-height:1;padding:5px 9px;border-radius:999px;color:var(--accent);background:var(--accent-soft)}
 .link{background:none;border:0;padding:0;font-size:13px;font-weight:500;color:var(--ink-500);cursor:pointer}
