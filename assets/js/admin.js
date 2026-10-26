@@ -1,6 +1,6 @@
 // Fonctions admin : formulaire de création / modification / duplication, archivage, suppression.
 import { creerFiche, modifierFiche, supprimerFiche, enregistrerFichier, nouvelId, cheminsDe, supprimerFichiers } from "./donnees.js";
-import { TYPES, COULEURS, INPI, PRIX, STATUTS, PAYS, majuscules } from "./referentiels.js";
+import { TYPES, COULEURS, INPI, PRIX, STATUTS, PAYS, majuscules, nomComplet } from "./referentiels.js";
 import { CONFIG } from "./config.js";
 
 const $ = id => document.getElementById(id);
@@ -88,7 +88,7 @@ export function creerAdmin({ notifier, fiches, surChangement }) {
     modifie = false;
     dlg.showModal();
     dlg.querySelector(".modale__corps").scrollTop = 0;
-    form.elements.titre.focus();
+    form.elements.marque.focus();
   }
 
   function annuler() {
@@ -254,8 +254,9 @@ export function creerAdmin({ notifier, fiches, surChangement }) {
   // ---------- enregistrement ----------
   form.addEventListener("submit", async e => {
     e.preventDefault();
-    const manquants = ["titre", "marque"].filter(c => !form.elements[c].value.trim());
-    for (const c of ["titre", "marque"]) form.elements[c].toggleAttribute("aria-invalid", manquants.includes(c));
+    // dans l'ordre du formulaire : le curseur va au premier champ manquant
+    const manquants = ["marque", "titre"].filter(c => !form.elements[c].value.trim());
+    for (const c of ["marque", "titre"]) form.elements[c].toggleAttribute("aria-invalid", manquants.includes(c));
     if (manquants.length) {
       form.elements[manquants[0]].focus();
       return;
@@ -373,7 +374,7 @@ export function creerAdmin({ notifier, fiches, surChangement }) {
     },
     demanderSuppression(f) {
       aSupprimer = f;
-      $("supNom").textContent = f.titre;
+      $("supNom").textContent = nomComplet(f);
       sup.showModal();
       $("supAnnuler").focus();
     },

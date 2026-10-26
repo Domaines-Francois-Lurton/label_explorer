@@ -231,8 +231,11 @@ body.sans-defilement{overflow:hidden}
 .toast.visible{opacity:1;transform:translate(-50%,0)}
 
 /* ---------- boutons ---------- */
-.btn-plein{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 14px;border:0;border-radius:10px;background:var(--accent);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
-.btn-plein:hover{background:var(--accent-hover)}
+/* dégradé du logo, assombri pour que le texte blanc reste lisible (contraste 4,6 au centre) ;
+   bordure haute transparente : abaisse le texte d'un demi-pixel, les libellés sans jambage
+   (« Nouvelle fiche ») paraissant sinon trop hauts */
+.btn-plein{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 14px;border:0;border-top:1px solid transparent;border-radius:10px;background:linear-gradient(160deg,#1196aa,#006a80);box-shadow:0 2px 8px oklch(0.52 0.12 212 / 0.3);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-plein:hover{filter:brightness(.92)}
 .btn-plein:disabled{opacity:.6;cursor:progress}
 .btn-danger{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 14px;border:0;border-radius:10px;background:var(--red);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer}
 .btn-danger:hover{background:oklch(0.44 0.17 25)}

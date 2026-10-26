@@ -1,5 +1,5 @@
 // Fiche détail : galerie, plein écran, téléchargements et ensemble des informations.
-import { STATUT_BADGE, INPI_BADGE, COULEUR_POINT, COULEUR_FOND, majuscules } from "./referentiels.js";
+import { STATUT_BADGE, INPI_BADGE, COULEUR_POINT, COULEUR_FOND, majuscules, nomComplet } from "./referentiels.js";
 import { creerZip } from "./zip.js";
 import { CONFIG } from "./config.js";
 
@@ -42,7 +42,7 @@ export function creerVueFiche({ notifier }) {
     index = (i + nb()) % nb();
     const src = affichage(fiche.visuels[index]);
     charger($("sceneImage"), src);
-    $("sceneImage").alt = `${fiche.titre}, visuel ${index + 1}`;
+    $("sceneImage").alt = `${nomComplet(fiche)}, visuel ${index + 1}`;
     $("compteur").textContent = `Visuel ${index + 1} / ${nb()}`;
     $("miniatures").querySelectorAll(".miniature").forEach((m, k) => m.setAttribute("aria-current", k === index));
     if (!$("pleinEcran").hidden) {
@@ -131,7 +131,7 @@ export function creerVueFiche({ notifier }) {
   });
 
   // ---------- téléchargements ----------
-  const base = () => slug(fiche.ref || fiche.titre) || "etiquette";
+  const base = () => slug(fiche.ref || nomComplet(fiche)) || "etiquette";
   // extension tirée du chemin Storage (l'adresse de téléchargement porte des paramètres)
   const nomVisuel = (v, i) => `${base()}-visuel-${i + 1}.${extension(v.chemin || v.url)}`;
 
@@ -192,8 +192,8 @@ export function creerVueFiche({ notifier }) {
     $("infos").innerHTML = `
       <div class="infos__tete">
         <div>
-          <h1 class="infos__titre">${esc(f.titre)}</h1>
-          <p class="infos__marque">${esc(f.marque)}</p>
+          <h1 class="infos__titre">${esc(f.marque)}</h1>
+          <p class="infos__marque">${esc(f.titre)}</p>
         </div>
         <span class="badge badge--grand ${STATUT_BADGE[f.statut]}">${esc(majuscules(f.statut))}</span>
       </div>
@@ -231,7 +231,7 @@ export function creerVueFiche({ notifier }) {
       fiche = f;
       rendreInfos();
       rendreGalerie();
-      document.title = `${f.titre} - Label Explorer`;
+      document.title = `${nomComplet(f)} - Label Explorer`;
     },
     fermer() {
       fermerPleinEcran();

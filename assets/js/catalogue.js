@@ -1,6 +1,6 @@
 // Tableau de bord : bandeau, recherche, filtres, tri et grille des fiches.
 import { chargerFiches } from "./donnees.js";
-import { TYPES, COULEURS, INPI, PRIX, STATUTS, STATUT_BADGE, COULEUR_POINT, COULEUR_FOND, majuscules } from "./referentiels.js";
+import { TYPES, COULEURS, INPI, PRIX, STATUTS, STATUT_BADGE, COULEUR_POINT, COULEUR_FOND, majuscules, nomComplet } from "./referentiels.js";
 import { CONFIG } from "./config.js";
 import { creerVueFiche } from "./fiche.js";
 import { creerAdmin } from "./admin.js";
@@ -193,8 +193,9 @@ export async function demarrer({ role, deconnecter }) {
   function trier(liste) {
     const signe = etat.sens === "asc" ? 1 : -1;
     const cmp = etat.tri === "alpha"
-      ? (a, b) => fr.compare(a.titre, b.titre)
-      : (a, b) => a.modifieLe.localeCompare(b.modifieLe) || fr.compare(b.titre, a.titre);
+      // la marque d'abord (c'est le nom affiché en grand), puis le projet
+      ? (a, b) => fr.compare(a.marque, b.marque) || fr.compare(a.titre, b.titre)
+      : (a, b) => a.modifieLe.localeCompare(b.modifieLe) || fr.compare(b.marque, a.marque);
     return liste.sort((a, b) => signe * cmp(a, b));
   }
 
@@ -323,7 +324,7 @@ export async function demarrer({ role, deconnecter }) {
     // actions admin hors du lien : un bouton ne peut pas être dans un <a>.
     // En 4 cartes par ligne, seule l'icône reste visible (libellé en infobulle).
     const bouton = (action, libelle, icone, classe = "") =>
-      `<button type="button" data-action="${action}" class="${classe}" title="${libelle}" aria-label="${libelle} « ${esc(f.titre)} »">${icone}<span>${libelle}</span></button>`;
+      `<button type="button" data-action="${action}" class="${classe}" title="${libelle}" aria-label="${libelle} « ${esc(nomComplet(f))} »">${icone}<span>${libelle}</span></button>`;
     const actionsAdmin = admin ? `<div class="carte__actions">
         ${bouton("modifier", "Modifier", ICONES.modifier)}
         ${bouton("dupliquer", "Dupliquer", ICONES.dupliquer)}
@@ -340,8 +341,8 @@ export async function demarrer({ role, deconnecter }) {
         </div>
       </div>
       <div class="carte__corps">
-        <h3 class="carte__titre">${esc(f.titre)}</h3>
-        <p class="carte__marque">${esc(f.marque)}</p>
+        <h3 class="carte__titre">${esc(f.marque)}</h3>
+        <p class="carte__marque">${esc(f.titre)}</p>
         <div class="carte__reperes"><span class="tag">${esc(majuscules(f.type))}</span>${couleur}</div>
       </div>
       </a>

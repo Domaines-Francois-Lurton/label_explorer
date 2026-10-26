@@ -2,6 +2,10 @@
 
 // Affichage de ces valeurs : majuscule à chaque mot (« entrée de gamme » → « Entrée De Gamme »).
 // La valeur enregistrée, elle, ne change pas.
+// Nom d'une fiche quand il tient en une ligne (titre d'onglet, confirmation, noms de fichiers) :
+// la marque d'abord, le projet ensuite, comme à l'affichage.
+export const nomComplet = f => [f.marque, f.titre].filter(Boolean).join(" – ");
+
 export const majuscules = s => String(s ?? "").replace(/(^|[\s-])(\p{L})/gu, (_, avant, lettre) => avant + lettre.toUpperCase());
 
 export const TYPES = ["vin", "bulle", "sans alcool", "spiritueux"];
