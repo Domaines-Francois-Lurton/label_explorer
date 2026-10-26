@@ -172,6 +172,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .scene__ouvrir{width:100%;height:100%;padding:16px;border:0;background:none;cursor:zoom-in;display:block}
 .scene__ouvrir img{width:100%;height:100%;object-fit:contain;display:block;transition:opacity .2s ease}
 .scene__ouvrir img.en-chargement,.plein-ecran.ouvert .pe__image.en-chargement{opacity:.35}
+.scene__ouvrir img.masquee{opacity:0;transition:none} /* nouvelle fiche : rien tant que son visuel n'est pas arrivé, puis fondu */
 .scene__vide-bloc{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:13px;color:var(--ink-400)}
 .scene__vide{width:56px;height:56px;color:oklch(0.55 0.01 250 / 0.45)}
 .nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.88);box-shadow:var(--shadow-sm),var(--hairline);font-size:20px;line-height:1;color:var(--ink-800);cursor:pointer;display:grid;place-items:center;padding-bottom:3px}

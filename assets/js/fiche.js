@@ -29,19 +29,21 @@ export function creerVueFiche({ notifier }) {
   const nb = () => fiche.visuels.length;
   const affichage = v => v.apercu || v.url;
 
-  // Image estompée le temps du chargement, pour qu'on voie que le changement est pris en compte
-  function charger(img, src) {
-    if (img.getAttribute("src") === src) return;
-    img.classList.add("en-chargement");
-    img.onload = img.onerror = () => img.classList.remove("en-chargement");
+  // Le navigateur garde l'ancienne image à l'écran tant que la nouvelle n'est pas arrivée. Pendant ce temps :
+  //   - autre visuel de la même fiche : image estompée, pour montrer que le clic est pris en compte ;
+  //   - nouvelle fiche : image masquée, pour ne jamais montrer le visuel de la fiche précédente.
+  function charger(img, src, masquer = false) {
+    if (img.getAttribute("src") === src) { img.classList.remove("masquee"); return; }
+    img.classList.add(masquer ? "masquee" : "en-chargement");
+    img.onload = img.onerror = () => img.classList.remove("en-chargement", "masquee");
     img.src = src;
-    if (img.complete) img.classList.remove("en-chargement"); // déjà en cache
+    if (img.complete) img.classList.remove("en-chargement", "masquee"); // déjà en cache
   }
 
-  function montrer(i) {
+  function montrer(i, { nouvelleFiche = false } = {}) {
     index = (i + nb()) % nb();
     const src = affichage(fiche.visuels[index]);
-    charger($("sceneImage"), src);
+    charger($("sceneImage"), src, nouvelleFiche);
     $("sceneImage").alt = `${nomComplet(fiche)}, visuel ${index + 1}`;
     $("compteur").textContent = `Visuel ${index + 1} / ${nb()}`;
     $("miniatures").querySelectorAll(".miniature").forEach((m, k) => m.setAttribute("aria-current", k === index));
@@ -76,7 +78,7 @@ export function creerVueFiche({ notifier }) {
     $("dlTout").classList.toggle("hidden", !plusieurs);
     $("dlPdf").classList.toggle("hidden", !CONFIG.pdf || !fiche.pdf); // fonction PDF en pause : bouton masqué pour tous
     if (avecVisuels) {
-      montrer(fiche.couverture < nb() ? fiche.couverture : 0);
+      montrer(fiche.couverture < nb() ? fiche.couverture : 0, { nouvelleFiche: true });
       precharger();
     }
   }
